@@ -1,0 +1,19 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 120px;
+  width: 100%;
+  background-color: aqua;
+}
+.searchContainer {
+  margin: auto;
+}
+.postBtn {
+  margin-right: 10px;
+  font-size: larger;
+  border: 1px solid;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 5px 10px 8px #888888;
+}
