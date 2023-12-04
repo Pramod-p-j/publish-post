@@ -5,5 +5,6 @@ const loginCtrl = require("../controller/auth-controller");
 
 route.post("/login", loginCtrl.login);
 route.post("/register-user", userCtrl.register);
+// comment to test
 
 module.exports = route;
