@@ -16,14 +16,15 @@ const loginCtrl = {
             fullName: loggedInUser.fullName,
             email: loggedInUser.email,
           },
-          customConst.jwt_secret_key
+          customConst.jwt_secret_key,
+          { expiresIn: customConst.jwt_expiry_time }
         );
         res.json({ msg: "login.success", token: token, user: loggedInUser });
       } else {
         res.json({ msg: "Something went wrong , Try again later" });
       }
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
   },
 };
