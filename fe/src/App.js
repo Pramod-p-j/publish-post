@@ -6,9 +6,11 @@ import MainScreen from "./views/screens/main-screen/main-screen";
 import SignInForm from "./views/screens/register-form/register-form";
 import LoginForm from "./views/screens/login/login";
 import HomeScreen from "./views/screens/home-screen/home-screen";
+import ProtectedRoute from "./protectedRoute";
 import useAuth from "./hooks/useAuth";
 
 function App() {
+  const [isAuth] = useAuth();
   return (
     <>
       <BrowserRouter>
@@ -30,9 +32,9 @@ function App() {
               </SnackbarProvider>
             }
           />
-          {/* <Route element={<ProtectedRoutes auth={isAuth} />}> */}
-          <Route path="/home" element={<HomeScreen />} />
-          {/* </Route> */}
+          <Route element={<ProtectedRoute isAuth={isAuth} />}>
+            <Route path="/home" element={<HomeScreen />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </>

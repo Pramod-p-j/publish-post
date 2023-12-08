@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from "react";
 import "./view-posts.css";
+import postsServices from "../../../../../services/posts-services";
 
 function PublishedPosts(props) {
   const { open } = props;
-  const [postObj, setPostObj] = useState({});
+  const [posts, setPosts] = useState([]);
 
-  // useEffect(() => {
-  //   setPostObj(window.localStorage.getItem("postKey"));
-  // }, [posts]);
+  useEffect(() => {
+    if (open) {
+      postsServices
+        .fetchPosts()
+        .then((res) => setPosts(res.data.fetchedPosts))
+        .catch((err) => err);
+    }
+  }, [open]);
 
   return (
     <>
@@ -15,8 +21,18 @@ function PublishedPosts(props) {
         <div className="postsContainer">
           <div style={{ position: "absolute", right: "200px" }}>
             <h1>PublishedPosts</h1>
-            <div>Title: {postObj?.postTitle}</div>
-            <div>Description: {postObj?.postDescription}</div>
+            {posts?.map((item, index) => (
+              <div key={index} style={{ margin: "12px" }}>
+                <div>
+                  <span style={{ fontWeight: "bolder" }}>Title:</span>
+                  {item?.postTitle}
+                </div>
+                <div>
+                  <span style={{ fontWeight: "bolder" }}>Description:</span>
+                  {item?.description}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       )}

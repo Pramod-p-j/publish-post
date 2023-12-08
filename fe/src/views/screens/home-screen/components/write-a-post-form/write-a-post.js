@@ -1,6 +1,7 @@
 import React, { useEffect, useReducer, useState } from "react";
 import "./write-a-post.css";
 import { useLocation } from "react-router-dom";
+import postsServices from "../../../../../services/posts-services";
 
 //defining actions
 const SET_TITLE = "SET_TITLE";
@@ -44,8 +45,13 @@ function WriteAPost({ open }) {
       postTitle: title,
       postDescription: description,
     };
-    post.push(postObj);
-    // window.localStorage.setItem("postKey", JSON.stringify(postObj));
+    // post.push(postObj);
+    postsServices
+      .createPost(postObj)
+      .then((res) => {
+        console.log("res received successfully");
+      })
+      .catch((err) => err);
   };
 
   return (

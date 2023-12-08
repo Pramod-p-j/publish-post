@@ -31,6 +31,7 @@ function HomeScreen() {
 
   const logoutHandler = () => {
     window.localStorage.removeItem("userToken");
+    window.localStorage.removeItem("_user");
     navigate("/");
   };
 

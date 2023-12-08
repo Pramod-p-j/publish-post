@@ -1,5 +1,6 @@
 import axiosInstance from "../helpers/axios";
 import { LOGIN_USER, LOGOUT_USER } from "../apiRoutes";
+import axios from "axios";
 
 /* eslint import/no-anonymous-default-export: [2, {"allowObject": true}] */
 const loginUser = async (values) => {
@@ -11,7 +12,13 @@ const loginUser = async (values) => {
   return axiosInstance
     .post(LOGIN_USER, { loggedInUserObj })
     .then((res) => {
-      window.localStorage.setItem("userToken", res.data.token);
+      if (res.status === 200) {
+        window.localStorage.setItem("userToken", res.data.token);
+        window.localStorage.setItem("_user", JSON.stringify(res.data.user));
+        axios.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${res.data.token}`;
+      }
       return res;
     })
     .catch((err) => err);

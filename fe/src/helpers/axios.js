@@ -15,13 +15,12 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    /* const user = JSON.parse(localStorage.getItem('_user'));
-        const token = user ? user.token : null;
-        // const token = AuthService.getToken();
-
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
-        } */
+    const user = JSON.parse(localStorage.getItem("_user"));
+    const token = user ? user.token : null;
+    if (token) {
+      console.log("i m in if condt");
+      config.headers.Authorization = `Bearer ${token}`;
+    }
     return config;
   },
   (error) => Promise.reject(error)
@@ -31,14 +30,18 @@ axiosInstance.interceptors.response.use(
   (res) => res,
 
   async (err) => {
-    // console.log('Im interceptors error IN AXIOS: ', err.response, err.response.data);
-    /* if (err.response?.status === 401 && err.response?.data && err.response?.data?.data === 'INVALID_TOKEN') {
-            store.dispatch(
-                openSessionPopup({
-                    open: true
-                })
-            );
-        } */
+    console.log(
+      "Im interceptors error IN AXIOS: ",
+      err.response,
+      err.response.data
+    );
+    if (
+      err.response?.status === 401 &&
+      err.response?.data &&
+      err.response?.data?.data === "INVALID_TOKEN"
+    ) {
+      alert("Something went wrong Try again later");
+    }
     return Promise.reject(err);
   }
 );
