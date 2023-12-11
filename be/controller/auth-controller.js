@@ -37,6 +37,41 @@ const loginCtrl = {
       console.log(error);
     }
   },
+  googleLogin: async (req, res) => {
+    const userObj = {
+      email: req.body.googleUserObj.email,
+    };
+    const verifiedFlag = req.body.googleUserObj.verified
+      ? req.body.googleUserObj.verified
+      : false;
+    try {
+      const loggedInUser = await userModel.findOne(userObj);
+      if (loggedInUser && verifiedFlag) {
+        const token = jwt.sign(
+          {
+            fullName: loggedInUser.fullName,
+            email: loggedInUser.email,
+          },
+          customConst.jwt_secret_key,
+          { expiresIn: customConst.jwt_expiry_time }
+        );
+        const refinedUser = _.pick({ ...loggedInUser, token }, [
+          "_doc",
+          "token",
+        ]);
+        const mergedUser = { ...refinedUser._doc, token: refinedUser.token };
+        res.json({
+          msg: "login.success",
+          token: token,
+          user: mergedUser,
+        });
+      } else {
+        res.status(401).json({ msg: "Something went wrong, Try again later" });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  },
 };
 
 module.exports = loginCtrl;

@@ -114,7 +114,7 @@ function SignInForm(props) {
         <button
           type="submit"
           style={{ width: "120px" }}
-          onClick={() => formik.submitForm()}
+          // onClick={() => formik.submitForm()}
         >
           Register
         </button>

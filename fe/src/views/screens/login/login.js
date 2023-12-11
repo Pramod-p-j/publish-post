@@ -4,6 +4,8 @@ import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import authService from "../../../services/auth-service";
 import { useSnackbar } from "react-simple-snackbar";
+import { GoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
 
 const options = {
   position: "top-center",
@@ -52,6 +54,27 @@ function LoginForm() {
     },
   });
 
+  const googleLoginSuccessHandler = (credentialResponse) => {
+    const credentialResponseDecoded = jwtDecode(credentialResponse.credential);
+    authService
+      .googleLoginUser(credentialResponseDecoded)
+      .then((res) => {
+        if (res.status === 200) {
+          openSnackBar("Login successfull", 2000);
+          setTimeout(() => {
+            navigate("/home");
+          }, "1500");
+        } else {
+          openSnackBar("Something went wrong Try again later", 1500);
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const googleloginErrorHandler = () => {
+    alert("Login failed Try again");
+  };
+
   const clickBackHandler = () => {
     let mainScreenPath = `/`;
     navigate(mainScreenPath);
@@ -88,11 +111,17 @@ function LoginForm() {
         <button
           type="submit"
           style={{ width: "120px" }}
-          onClick={() => formik.submitForm()}
+          // onClick={() => formik.submitForm()}
         >
           Login
         </button>
       </form>
+      <div style={{ width: "250px" }}>
+        <GoogleLogin
+          onSuccess={googleLoginSuccessHandler}
+          onError={googleloginErrorHandler}
+        />
+      </div>
       <h2 onClick={clickBackHandler}>Back</h2>
     </div>
   );
