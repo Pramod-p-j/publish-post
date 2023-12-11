@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import registerServices from "../../../services/register-services";
 import { useSnackbar } from "react-simple-snackbar";
 import { useNavigate } from "react-router-dom";
+import { GoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
 
 const options = {
   position: "top-center",
@@ -55,6 +57,27 @@ function SignInForm(props) {
         .catch((err) => err);
     },
   });
+
+  const googleSignUpSuccessHandler = (credentialResponse) => {
+    const credentialResponseDecoded = jwtDecode(credentialResponse.credential);
+    registerServices
+      .googleSignUpUser(credentialResponseDecoded)
+      .then((res) => {
+        if (res.status === 200) {
+          openSnackBar("Registered successfull", 2000);
+          setTimeout(() => {
+            navigate("/login");
+          }, "1500");
+        } else {
+          openSnackBar("Something went wrong Try again later", 1500);
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const googleSingUpErrorHandler = () => {
+    alert("Sign Up failed Try again");
+  };
 
   const clickBackHandler = () => {
     let mainScreenPath = `/`;
@@ -118,6 +141,10 @@ function SignInForm(props) {
         >
           Register
         </button>
+        <GoogleLogin
+          onSuccess={googleSignUpSuccessHandler}
+          onError={googleSingUpErrorHandler}
+        />
       </form>
       <h2 onClick={clickBackHandler}>Back</h2>
     </div>

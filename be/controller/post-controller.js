@@ -18,8 +18,17 @@ const postCtrl = {
     }
   },
   fetchPost: async (req, res) => {
+    let criteria = {};
+    let searchText = "";
+    searchText = req.body.searchVal?.trim();
+    if (searchText) {
+      criteria = {
+        ...criteria,
+        postTitle: { $regex: searchText, $options: "i" },
+      };
+    }
     try {
-      const fetchedPosts = await postModel.find();
+      const fetchedPosts = await postModel.find(criteria);
       if (fetchedPosts.length > 0) {
         res.json({ fetchedPosts, msg: "Result fetched successfully" });
       }

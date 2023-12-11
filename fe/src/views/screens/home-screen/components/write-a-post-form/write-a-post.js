@@ -1,6 +1,5 @@
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useReducer } from "react";
 import "./write-a-post.css";
-import { useLocation } from "react-router-dom";
 import postsServices from "../../../../../services/posts-services";
 
 //defining actions
@@ -25,8 +24,6 @@ const initialState = {
 
 function WriteAPost({ open }) {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [post, setPost] = useState([]);
-  const location = useLocation();
 
   const titleChangeHandler = (e) => {
     dispatch({ type: SET_TITLE, payload: e.target.value });
@@ -45,12 +42,9 @@ function WriteAPost({ open }) {
       postTitle: title,
       postDescription: description,
     };
-    // post.push(postObj);
     postsServices
       .createPost(postObj)
-      .then((res) => {
-        console.log("res received successfully");
-      })
+      .then((res) => res)
       .catch((err) => err);
   };
 

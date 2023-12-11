@@ -5,9 +5,10 @@ const loginCtrl = require("../controller/auth-controller");
 const postCtrl = require("../controller/post-controller");
 
 route.post("/login", loginCtrl.login);
+route.post("/google-signup", userCtrl.googleSignUp);
 route.post("/google-login", loginCtrl.googleLogin);
 route.post("/register-user", userCtrl.register);
 route.post("/create-post", postCtrl.createPost);
-route.get("/fetch-posts", postCtrl.fetchPost);
+route.post("/fetch-posts", postCtrl.fetchPost);
 
 module.exports = route;

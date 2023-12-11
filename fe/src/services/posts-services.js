@@ -2,17 +2,15 @@ import { CREATE_POST, FETCH_POSTS } from "../apiRoutes";
 import axiosInstance from "../helpers/axios";
 
 const createPost = async (values) => {
-  console.log("post service log called", values);
-
   return axiosInstance
     .post(CREATE_POST, values)
     .then((res) => res)
     .catch((err) => err);
 };
 
-const fetchPosts = async () => {
+const fetchPosts = async (val) => {
   return axiosInstance
-    .get(FETCH_POSTS)
+    .post(FETCH_POSTS, val)
     .then((res) => res)
     .catch((err) => err);
 };

@@ -24,6 +24,31 @@ const userCtrl = {
       console.log(error);
     }
   },
+  googleSignUp: async (req, res) => {
+    const userObj = {
+      fullName: req.body.googleUserObj.fullName,
+      email: req.body.googleUserObj.email,
+      password: "",
+      phoneNumber: "",
+    };
+    const verifiedFlag = req.body.googleUserObj.verified
+      ? req.body.googleUserObj.verified
+      : false;
+    try {
+      const loggedInUser = await userModel.create({ ...userObj });
+      if (loggedInUser && verifiedFlag) {
+        res.json({
+          msg: "user.added.success",
+        });
+      } else {
+        res.json({
+          msg: "throw.error",
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  },
 };
 
 module.exports = userCtrl;

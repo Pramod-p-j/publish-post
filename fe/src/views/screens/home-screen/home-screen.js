@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // import "./style.css";
 import WriteAPost from "./components/write-a-post-form/write-a-post";
 import PublishedPosts from "./components/view-posts/view-posts";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams, NavLink } from "react-router-dom";
+import postsServices from "../../../services/posts-services";
 
 function HomeScreen() {
   const location = useLocation();
@@ -11,6 +12,7 @@ function HomeScreen() {
   const [searchText, setSearchText] = useState("");
   const [showPosts, setShowPosts] = useState(false);
   const [openForm, setOpenForm] = useState(false);
+  const [resultBasedOnSearch, setResultBasedOnSearch] = useState([]);
   let navigate = useNavigate();
   const searchHandler = (e) => {
     setSearchText(e?.target?.value);
@@ -20,13 +22,11 @@ function HomeScreen() {
   };
 
   const showFormComponentHandler = () => {
-    // setShowPosts(!showPosts);
     setOpenForm(!openForm);
   };
 
   const showPostComponentHandler = () => {
     setShowPosts(!showPosts);
-    // setOpenForm(!openForm);
   };
 
   const logoutHandler = () => {
@@ -34,6 +34,17 @@ function HomeScreen() {
     window.localStorage.removeItem("_user");
     navigate("/");
   };
+
+  const getPosts = () => {
+    postsServices
+      .fetchPosts({ searchVal: searchText })
+      .then((res) => setResultBasedOnSearch(res.data.fetchedPosts))
+      .catch((err) => err);
+  };
+
+  useEffect(() => {
+    getPosts();
+  }, [searchText, openForm]);
 
   return (
     <>
@@ -63,7 +74,10 @@ function HomeScreen() {
         </div>
         <div onClick={logoutHandler}>Logout</div>
       </div>
-      <PublishedPosts open={showPosts} />
+      <PublishedPosts
+        open={showPosts}
+        resultBasedOnSearch={resultBasedOnSearch}
+      />
       <WriteAPost open={openForm} />
     </>
   );
