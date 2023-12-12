@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const customConst = require("../config/custom");
 var _ = require("lodash");
 
+//comment to test
 const loginCtrl = {
   login: async (req, res) => {
     const loggedInUserObj = {
