@@ -23,10 +23,12 @@ function HomeScreen() {
 
   const showFormComponentHandler = () => {
     setOpenForm(!openForm);
+    if (showPosts) setShowPosts(!showPosts);
   };
 
   const showPostComponentHandler = () => {
     setShowPosts(!showPosts);
+    if (openForm) setOpenForm(!openForm);
   };
 
   const logoutHandler = () => {
@@ -62,15 +64,17 @@ function HomeScreen() {
           ></input>
           <button onClick={clearBtnHandler}>X</button>
         </div>
-        <div className="writeBtn" onClick={showFormComponentHandler}>
-          Write
-        </div>
-        <div
-          className="postBtn"
-          type="button"
-          onClick={showPostComponentHandler}
-        >
-          Posts
+        <div className="navBar">
+          <div className="writeBtn" onClick={showFormComponentHandler}>
+            Write
+          </div>
+          <div
+            className="postBtn"
+            type="button"
+            onClick={showPostComponentHandler}
+          >
+            Posts
+          </div>
         </div>
         <div onClick={logoutHandler}>Logout</div>
       </div>

@@ -4,9 +4,13 @@
   justify-content: space-between;
   height: 120px;
   width: 100%;
-  background-color: aqua;
+  background-color: aqua; 
 }
 .searchContainer {
+  margin: auto;
+}
+.navBar {
+  display: flex;
   margin: auto;
 }
 .postBtn {
