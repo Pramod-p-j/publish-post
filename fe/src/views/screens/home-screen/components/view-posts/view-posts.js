@@ -34,6 +34,9 @@ function PublishedPosts(props) {
                 </div>
               </div>
             ))}
+            {resultBasedOnSearch.length === 0 ? (
+              <div>No Posts found</div>
+            ) : null}
           </div>
         </div>
       )}
