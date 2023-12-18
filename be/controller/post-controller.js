@@ -20,6 +20,7 @@ const postCtrl = {
   fetchPost: async (req, res) => {
     let criteria = {};
     let searchText = "";
+    let fetchedPosts = [];
     searchText = req.body.searchVal?.trim();
     if (searchText) {
       criteria = {
@@ -28,10 +29,10 @@ const postCtrl = {
       };
     }
     try {
-      const fetchedPosts = await postModel.find(criteria);
+      fetchedPosts = await postModel.find(criteria);
       if (fetchedPosts.length > 0) {
         res.json({ fetchedPosts, msg: "Result fetched successfully" });
-      }
+      } else res.json({ fetchedPosts, msg: "No Posts found" });
     } catch (error) {
       console.log(error);
     }

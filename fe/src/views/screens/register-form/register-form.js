@@ -52,6 +52,8 @@ function SignInForm(props) {
           if (res.status === 200) {
             resetForm({});
             openSnackBar("user added successfully", 2000);
+          } else {
+            openSnackBar("Something went wrong Try again later", 1500);
           }
         })
         .catch((err) => err);

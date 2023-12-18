@@ -12,12 +12,15 @@ const loginUser = async (values) => {
   return axiosInstance
     .post(LOGIN_USER, { loggedInUserObj })
     .then((res) => {
-      if (res.status === 200) {
+      if (res.status === 200 && res.data.token) {
         window.localStorage.setItem("userToken", res.data.token);
         window.localStorage.setItem("_user", JSON.stringify(res.data.user));
         axios.defaults.headers.common[
           "Authorization"
         ] = `Bearer ${res.data.token}`;
+      } else {
+        window.localStorage.setItem("userToken", null);
+        window.localStorage.setItem("_user", null);
       }
       return res;
     })

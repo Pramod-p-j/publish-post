@@ -42,12 +42,17 @@ function LoginForm() {
       authService
         .loginUser(values)
         .then((res) => {
-          if (res.status === 200) {
+          if (res.status === 200 && res.data.token) {
             resetForm({});
             openSnackBar("Login successfull", 2000);
             setTimeout(() => {
               navigate("/home");
             }, "2000");
+          } else if (
+            res.data.msg === "Something went wrong , Try again later"
+          ) {
+            resetForm({});
+            openSnackBar("Login failed", 1500);
           }
         })
         .catch((err) => err);
