@@ -1,9 +1,9 @@
 const userModel = require("../model/user-model");
 const jwt = require("jsonwebtoken");
 const customConst = require("../config/custom");
+const issueJwt = require("../helpers/issue-jwt");
 var _ = require("lodash");
 
-//comment to test
 const loginCtrl = {
   login: async (req, res) => {
     const loggedInUserObj = {
@@ -13,6 +13,10 @@ const loginCtrl = {
     try {
       const loggedInUser = await userModel.findOne(loggedInUserObj);
       if (loggedInUser) {
+        /* const payloadObj = {
+          fullName: loggedInUser.fullName,
+          email: loggedInUser.email,
+        }; */
         const token = jwt.sign(
           {
             fullName: loggedInUser.fullName,
@@ -21,6 +25,11 @@ const loginCtrl = {
           customConst.jwt_secret_key,
           { expiresIn: customConst.jwt_expiry_time }
         );
+        /* const tokenOne = await issueJwt.tokenIssue(
+          payloadObj,
+          customConst.jwt_secret_key,
+          customConst.jwt_expiry_time
+        ); */
         const refinedUser = _.pick({ ...loggedInUser, token }, [
           "_doc",
           "token",

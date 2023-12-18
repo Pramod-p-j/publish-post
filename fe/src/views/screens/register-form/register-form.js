@@ -136,11 +136,7 @@ function SignInForm(props) {
           )}
           <br />
         </div>
-        <button
-          type="submit"
-          style={{ width: "120px" }}
-          // onClick={() => formik.submitForm()}
-        >
+        <button type="submit" style={{ width: "120px" }}>
           Register
         </button>
         <GoogleLogin
